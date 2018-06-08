@@ -37,8 +37,14 @@ class PhotonActionSheetTest: BaseTestCase {
     func testShareOptionIsShownFromShortCut() {
         navigator.goto(BrowserTab)
         waitUntilPageLoad()
+        waitforExistence(app.buttons["TabLocationView.pageOptionsButton"])
         app.buttons["TabLocationView.pageOptionsButton"].press(forDuration: 1)
         // Wait to see the Share options sheet
+        // Workaround since sometimes the button is pressed just on the limit with the url bar text field and the incorrect menu is shown
+        if (app.tables["Context Menu"].cells["menu-PasteAndGo"].exists) {
+            app.otherElements["PopoverDismissRegion"].tap()
+            app.buttons["TabLocationView.pageOptionsButton"].press(forDuration: 1)
+        }
         waitforExistence(app.buttons["Copy"])
     }
 
